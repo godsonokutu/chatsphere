@@ -1,0 +1,1400 @@
+/* =========================================================
+   CHATSPHERE — GLOBAL DESIGN SYSTEM
+   ========================================================= */
+
+/* ---------------------------------------------------------
+   1. DESIGN TOKENS
+   --------------------------------------------------------- */
+
+:root {
+  /* Typography */
+  --font-sans:
+    Inter,
+    ui-sans-serif,
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
+
+  --font-mono:
+    "SFMono-Regular",
+    Consolas,
+    "Liberation Mono",
+    monospace;
+
+  /* Brand */
+  --brand-50: #f1f7ff;
+  --brand-100: #dfeeff;
+  --brand-200: #bfdcff;
+  --brand-300: #91c3ff;
+  --brand-400: #5aa3ff;
+  --brand-500: #2f80ed;
+  --brand-600: #1769d2;
+  --brand-700: #1354aa;
+  --brand-800: #174887;
+  --brand-900: #193e6c;
+
+  --accent-500: #7c5cff;
+  --accent-600: #6945f5;
+
+  /* Feedback */
+  --success-500: #16a56a;
+  --success-600: #108653;
+
+  --warning-500: #f59e0b;
+
+  --danger-50: #fff1f2;
+  --danger-500: #e5484d;
+  --danger-600: #ca343a;
+
+  /* Neutrals */
+  --white: #ffffff;
+  --black: #080b12;
+
+  /* Main light theme */
+  --bg-primary: #f7f9fc;
+  --bg-secondary: #eef3f9;
+  --bg-elevated: #ffffff;
+
+  --surface-1: rgba(255, 255, 255, 0.78);
+  --surface-2: rgba(255, 255, 255, 0.94);
+  --surface-3: #ffffff;
+
+  --text-primary: #101828;
+  --text-secondary: #596579;
+  --text-tertiary: #8390a5;
+  --text-inverse: #ffffff;
+
+  --border-subtle: rgba(15, 31, 54, 0.08);
+  --border-default: rgba(15, 31, 54, 0.13);
+  --border-strong: rgba(15, 31, 54, 0.2);
+
+  --input-bg: rgba(255, 255, 255, 0.86);
+  --input-border: #d6dfeb;
+
+  --overlay: rgba(6, 13, 25, 0.52);
+
+  /* Shadows */
+  --shadow-xs:
+    0 1px 2px rgba(15, 23, 42, 0.05);
+
+  --shadow-sm:
+    0 4px 14px rgba(15, 23, 42, 0.07);
+
+  --shadow-md:
+    0 12px 32px rgba(15, 23, 42, 0.1);
+
+  --shadow-lg:
+    0 24px 70px rgba(15, 23, 42, 0.14);
+
+  --shadow-brand:
+    0 12px 32px rgba(47, 128, 237, 0.24);
+
+  /* Radii */
+  --radius-xs: 6px;
+  --radius-sm: 10px;
+  --radius-md: 14px;
+  --radius-lg: 20px;
+  --radius-xl: 28px;
+  --radius-pill: 999px;
+
+  /* Spacing */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-7: 28px;
+  --space-8: 32px;
+  --space-10: 40px;
+  --space-12: 48px;
+  --space-16: 64px;
+
+  /* Layout */
+  --content-max: 1440px;
+  --auth-max: 1180px;
+
+  /* Header / controls */
+  --control-height-sm: 38px;
+  --control-height-md: 46px;
+  --control-height-lg: 52px;
+
+  /* Motion */
+  --ease-standard:
+    cubic-bezier(
+      0.2,
+      0.8,
+      0.2,
+      1
+    );
+
+  --transition-fast:
+    140ms
+    var(--ease-standard);
+
+  --transition-normal:
+    220ms
+    var(--ease-standard);
+
+  --transition-slow:
+    360ms
+    var(--ease-standard);
+
+  color-scheme: light;
+
+  font-family:
+    var(--font-sans);
+
+  color:
+    var(--text-primary);
+
+  background:
+    var(--bg-primary);
+
+  font-synthesis:
+    none;
+
+  text-rendering:
+    optimizeLegibility;
+
+  -webkit-font-smoothing:
+    antialiased;
+
+  -moz-osx-font-smoothing:
+    grayscale;
+}
+
+/* ---------------------------------------------------------
+   2. THEME POLICY
+
+   ChatSphere currently ships the approved Figma light theme
+   by default. Do not automatically switch the application
+   because the operating system/browser prefers dark mode.
+
+   Explicit dark mode remains available through:
+   <html data-theme="dark">
+   --------------------------------------------------------- */
+
+/* Manual light theme */
+:root[
+  data-theme="light"
+] {
+  color-scheme:
+    light;
+}
+
+/* Manual dark theme */
+:root[
+  data-theme="dark"
+] {
+  color-scheme:
+    dark;
+
+  --bg-primary:
+    #0a0f18;
+
+  --bg-secondary:
+    #0d1420;
+
+  --bg-elevated:
+    #121b29;
+
+  --surface-1:
+    rgba(
+      18,
+      27,
+      41,
+      0.74
+    );
+
+  --surface-2:
+    rgba(
+      20,
+      30,
+      45,
+      0.94
+    );
+
+  --surface-3:
+    #162131;
+
+  --text-primary:
+    #f4f7fb;
+
+  --text-secondary:
+    #a8b5c7;
+
+  --text-tertiary:
+    #748299;
+
+  --border-subtle:
+    rgba(
+      255,
+      255,
+      255,
+      0.07
+    );
+
+  --border-default:
+    rgba(
+      255,
+      255,
+      255,
+      0.11
+    );
+
+  --border-strong:
+    rgba(
+      255,
+      255,
+      255,
+      0.18
+    );
+
+  --input-bg:
+    rgba(
+      14,
+      23,
+      36,
+      0.9
+    );
+
+  --input-border:
+    #2d3a4d;
+
+  --overlay:
+    rgba(
+      0,
+      0,
+      0,
+      0.68
+    );
+
+  --danger-50:
+    rgba(
+      229,
+      72,
+      77,
+      0.12
+    );
+}
+
+/* ---------------------------------------------------------
+   3. RESET
+   --------------------------------------------------------- */
+
+*,
+*::before,
+*::after {
+  box-sizing:
+    border-box;
+}
+
+html {
+  width:
+    100%;
+
+  min-width:
+    100%;
+
+  min-height:
+    100%;
+
+  background:
+    var(--bg-primary);
+
+  scroll-behavior:
+    smooth;
+
+  -webkit-text-size-adjust:
+    100%;
+
+  text-size-adjust:
+    100%;
+}
+
+body {
+  width:
+    100%;
+
+  margin:
+    0;
+
+  padding:
+    0;
+
+  min-width:
+    320px;
+
+  min-height:
+    100vh;
+
+  min-height:
+    100dvh;
+
+  color:
+    var(--text-primary);
+
+  background:
+    var(--bg-primary);
+
+  font-family:
+    var(--font-sans);
+
+  font-size:
+    16px;
+
+  line-height:
+    1.5;
+
+  overflow-x:
+    hidden;
+
+  text-align:
+    left;
+}
+
+#root {
+  width:
+    100%;
+
+  min-width:
+    0;
+
+  min-height:
+    100vh;
+
+  min-height:
+    100dvh;
+
+  margin:
+    0;
+
+  padding:
+    0;
+}
+
+img,
+picture,
+svg,
+canvas {
+  display:
+    block;
+
+  max-width:
+    100%;
+}
+
+img {
+  height:
+    auto;
+}
+
+button,
+input,
+textarea,
+select {
+  font:
+    inherit;
+}
+
+button {
+  border:
+    0;
+
+  cursor:
+    pointer;
+}
+
+button:disabled {
+  cursor:
+    not-allowed;
+}
+
+textarea {
+  resize:
+    vertical;
+}
+
+a {
+  color:
+    inherit;
+
+  text-decoration:
+    none;
+}
+
+ul,
+ol {
+  margin:
+    0;
+
+  padding:
+    0;
+}
+
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin:
+    0;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  color:
+    var(--text-primary);
+
+  font-weight:
+    700;
+
+  line-height:
+    1.15;
+
+  letter-spacing:
+    -0.025em;
+}
+
+p {
+  color:
+    var(--text-secondary);
+}
+
+code,
+pre {
+  font-family:
+    var(--font-mono);
+}
+
+/* ---------------------------------------------------------
+   4. SELECTION + SCROLLBAR
+   --------------------------------------------------------- */
+
+::selection {
+  color:
+    var(--white);
+
+  background:
+    var(--brand-600);
+}
+
+* {
+  scrollbar-width:
+    thin;
+
+  scrollbar-color:
+    var(--border-strong)
+    transparent;
+}
+
+*::-webkit-scrollbar {
+  width:
+    8px;
+
+  height:
+    8px;
+}
+
+*::-webkit-scrollbar-track {
+  background:
+    transparent;
+}
+
+*::-webkit-scrollbar-thumb {
+  background:
+    var(--border-strong);
+
+  border:
+    2px solid
+    transparent;
+
+  border-radius:
+    var(--radius-pill);
+
+  background-clip:
+    padding-box;
+}
+
+/* ---------------------------------------------------------
+   5. ACCESSIBILITY
+   --------------------------------------------------------- */
+
+:focus {
+  outline:
+    none;
+}
+
+:focus-visible {
+  outline:
+    3px solid
+    rgba(
+      47,
+      128,
+      237,
+      0.34
+    );
+
+  outline-offset:
+    2px;
+}
+
+.sr-only {
+  position:
+    absolute;
+
+  width:
+    1px;
+
+  height:
+    1px;
+
+  padding:
+    0;
+
+  margin:
+    -1px;
+
+  overflow:
+    hidden;
+
+  clip:
+    rect(
+      0,
+      0,
+      0,
+      0
+    );
+
+  white-space:
+    nowrap;
+
+  border:
+    0;
+}
+
+/* ---------------------------------------------------------
+   6. COMMON SURFACES
+   --------------------------------------------------------- */
+
+.surface {
+  background:
+    var(--surface-2);
+
+  border:
+    1px solid
+    var(--border-subtle);
+
+  border-radius:
+    var(--radius-lg);
+
+  box-shadow:
+    var(--shadow-sm);
+}
+
+.glass-surface {
+  background:
+    var(--surface-1);
+
+  border:
+    1px solid
+    var(--border-subtle);
+
+  box-shadow:
+    var(--shadow-md);
+
+  backdrop-filter:
+    blur(20px);
+
+  -webkit-backdrop-filter:
+    blur(20px);
+}
+
+/* ---------------------------------------------------------
+   7. GLOBAL FORM SYSTEM
+   --------------------------------------------------------- */
+
+.form-field {
+  display:
+    flex;
+
+  flex-direction:
+    column;
+
+  gap:
+    7px;
+}
+
+.form-label {
+  color:
+    var(--text-primary);
+
+  font-size:
+    0.875rem;
+
+  font-weight:
+    650;
+}
+
+.form-input,
+.form-textarea,
+.form-select {
+  width:
+    100%;
+
+  min-height:
+    var(
+      --control-height-lg
+    );
+
+  padding:
+    0 15px;
+
+  color:
+    var(--text-primary);
+
+  background:
+    var(--input-bg);
+
+  border:
+    1px solid
+    var(--input-border);
+
+  border-radius:
+    var(--radius-md);
+
+  box-shadow:
+    var(--shadow-xs);
+
+  outline:
+    none;
+
+  transition:
+    border-color
+      var(--transition-fast),
+    box-shadow
+      var(--transition-fast),
+    background
+      var(--transition-fast),
+    transform
+      var(--transition-fast);
+}
+
+.form-input::placeholder,
+.form-textarea::placeholder {
+  color:
+    var(--text-tertiary);
+}
+
+.form-input:hover,
+.form-textarea:hover,
+.form-select:hover {
+  border-color:
+    var(--border-strong);
+}
+
+.form-input:focus,
+.form-textarea:focus,
+.form-select:focus {
+  border-color:
+    var(--brand-500);
+
+  box-shadow:
+    0 0 0 4px
+      rgba(
+        47,
+        128,
+        237,
+        0.12
+      );
+}
+
+.form-input:disabled,
+.form-textarea:disabled,
+.form-select:disabled {
+  opacity:
+    0.58;
+
+  cursor:
+    not-allowed;
+}
+
+.form-input[
+  aria-invalid="true"
+],
+.form-textarea[
+  aria-invalid="true"
+] {
+  border-color:
+    var(--danger-500);
+
+  box-shadow:
+    0 0 0 4px
+      rgba(
+        229,
+        72,
+        77,
+        0.1
+      );
+}
+
+.form-helper {
+  color:
+    var(--text-tertiary);
+
+  font-size:
+    0.78rem;
+
+  line-height:
+    1.4;
+}
+
+.form-error {
+  color:
+    var(--danger-500);
+
+  font-size:
+    0.8rem;
+
+  line-height:
+    1.4;
+}
+
+/* ---------------------------------------------------------
+   8. BUTTON SYSTEM
+   --------------------------------------------------------- */
+
+.button {
+  position:
+    relative;
+
+  display:
+    inline-flex;
+
+  align-items:
+    center;
+
+  justify-content:
+    center;
+
+  gap:
+    8px;
+
+  min-height:
+    var(
+      --control-height-md
+    );
+
+  padding:
+    0 18px;
+
+  border:
+    1px solid
+    transparent;
+
+  border-radius:
+    var(--radius-md);
+
+  font-weight:
+    700;
+
+  line-height:
+    1;
+
+  white-space:
+    nowrap;
+
+  transition:
+    transform
+      var(--transition-fast),
+    box-shadow
+      var(--transition-fast),
+    background
+      var(--transition-fast),
+    border-color
+      var(--transition-fast),
+    opacity
+      var(--transition-fast);
+}
+
+.button:hover:not(
+  :disabled
+) {
+  transform:
+    translateY(-1px);
+}
+
+.button:active:not(
+  :disabled
+) {
+  transform:
+    translateY(0);
+}
+
+.button:disabled {
+  opacity:
+    0.55;
+}
+
+.button-primary {
+  color:
+    var(--text-inverse);
+
+  background:
+    linear-gradient(
+      135deg,
+      var(--brand-500),
+      var(--accent-500)
+    );
+
+  box-shadow:
+    var(--shadow-brand);
+}
+
+.button-primary:hover:not(
+  :disabled
+) {
+  box-shadow:
+    0 16px 36px
+      rgba(
+        47,
+        128,
+        237,
+        0.3
+      );
+}
+
+.button-secondary {
+  color:
+    var(--text-primary);
+
+  background:
+    var(--surface-2);
+
+  border-color:
+    var(--border-default);
+
+  box-shadow:
+    var(--shadow-xs);
+}
+
+.button-danger {
+  color:
+    var(--white);
+
+  background:
+    var(--danger-500);
+}
+
+.button-danger:hover:not(
+  :disabled
+) {
+  background:
+    var(--danger-600);
+}
+
+.button-ghost {
+  color:
+    var(--text-secondary);
+
+  background:
+    transparent;
+}
+
+.button-ghost:hover:not(
+  :disabled
+) {
+  color:
+    var(--text-primary);
+
+  background:
+    var(--border-subtle);
+}
+
+.button-lg {
+  min-height:
+    var(
+      --control-height-lg
+    );
+
+  padding:
+    0 22px;
+}
+
+.button-sm {
+  min-height:
+    var(
+      --control-height-sm
+    );
+
+  padding:
+    0 13px;
+
+  border-radius:
+    var(--radius-sm);
+
+  font-size:
+    0.875rem;
+}
+
+/* ---------------------------------------------------------
+   9. GLOBAL FEEDBACK COMPONENTS
+   --------------------------------------------------------- */
+
+.alert {
+  display:
+    flex;
+
+  align-items:
+    flex-start;
+
+  gap:
+    10px;
+
+  padding:
+    12px 14px;
+
+  border-radius:
+    var(--radius-md);
+
+  font-size:
+    0.875rem;
+
+  line-height:
+    1.45;
+}
+
+.alert-error {
+  color:
+    var(--danger-600);
+
+  background:
+    var(--danger-50);
+
+  border:
+    1px solid
+    rgba(
+      229,
+      72,
+      77,
+      0.2
+    );
+}
+
+.alert-success {
+  color:
+    var(--success-600);
+
+  background:
+    rgba(
+      22,
+      165,
+      106,
+      0.09
+    );
+
+  border:
+    1px solid
+    rgba(
+      22,
+      165,
+      106,
+      0.2
+    );
+}
+
+/* ---------------------------------------------------------
+   10. BRAND UTILITIES
+   --------------------------------------------------------- */
+
+.brand-gradient-text {
+  color:
+    transparent;
+
+  background:
+    linear-gradient(
+      135deg,
+      var(--brand-500),
+      var(--accent-500)
+    );
+
+  background-clip:
+    text;
+
+  -webkit-background-clip:
+    text;
+}
+
+.brand-orb {
+  position:
+    absolute;
+
+  border-radius:
+    50%;
+
+  pointer-events:
+    none;
+
+  filter:
+    blur(1px);
+
+  opacity:
+    0.5;
+}
+
+/* ---------------------------------------------------------
+   11. LOADING
+   --------------------------------------------------------- */
+
+.spinner {
+  width:
+    18px;
+
+  height:
+    18px;
+
+  border:
+    2px solid
+    rgba(
+      255,
+      255,
+      255,
+      0.32
+    );
+
+  border-top-color:
+    currentColor;
+
+  border-radius:
+    50%;
+
+  animation:
+    chatsphere-spin
+    700ms
+    linear
+    infinite;
+}
+
+.skeleton {
+  position:
+    relative;
+
+  overflow:
+    hidden;
+
+  background:
+    var(--border-subtle);
+
+  border-radius:
+    var(--radius-sm);
+}
+
+.skeleton::after {
+  content:
+    "";
+
+  position:
+    absolute;
+
+  inset:
+    0;
+
+  transform:
+    translateX(-100%);
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgba(
+        255,
+        255,
+        255,
+        0.32
+      ),
+      transparent
+    );
+
+  animation:
+    chatsphere-shimmer
+    1.45s
+    infinite;
+}
+
+@keyframes
+chatsphere-spin {
+  to {
+    transform:
+      rotate(360deg);
+  }
+}
+
+@keyframes
+chatsphere-shimmer {
+  100% {
+    transform:
+      translateX(100%);
+  }
+}
+
+@keyframes
+chatsphere-fade-up {
+  from {
+    opacity:
+      0;
+
+    transform:
+      translateY(10px);
+  }
+
+  to {
+    opacity:
+      1;
+
+    transform:
+      translateY(0);
+  }
+}
+
+.animate-fade-up {
+  animation:
+    chatsphere-fade-up
+    420ms
+    var(--ease-standard)
+    both;
+}
+
+/* ---------------------------------------------------------
+   12. RESPONSIVE CONTAINERS
+   --------------------------------------------------------- */
+
+.app-container {
+  width:
+    min(
+      100%,
+      var(--content-max)
+    );
+
+  margin-inline:
+    auto;
+
+  padding-inline:
+    clamp(
+      16px,
+      3vw,
+      40px
+    );
+}
+
+.safe-area {
+  padding-top:
+    env(
+      safe-area-inset-top,
+      0
+    );
+
+  padding-right:
+    env(
+      safe-area-inset-right,
+      0
+    );
+
+  padding-bottom:
+    env(
+      safe-area-inset-bottom,
+      0
+    );
+
+  padding-left:
+    env(
+      safe-area-inset-left,
+      0
+    );
+}
+
+/* ---------------------------------------------------------
+   13. RESPONSIVE TYPOGRAPHY
+   --------------------------------------------------------- */
+
+.display-title {
+  font-size:
+    clamp(
+      2rem,
+      5vw,
+      4.5rem
+    );
+
+  font-weight:
+    800;
+
+  line-height:
+    0.98;
+
+  letter-spacing:
+    -0.055em;
+}
+
+.page-title {
+  font-size:
+    clamp(
+      1.5rem,
+      3vw,
+      2.25rem
+    );
+
+  font-weight:
+    750;
+}
+
+.section-title {
+  font-size:
+    clamp(
+      1.05rem,
+      2vw,
+      1.3rem
+    );
+
+  font-weight:
+    700;
+}
+
+/* ---------------------------------------------------------
+   14. TABLET / MOBILE
+   --------------------------------------------------------- */
+
+@media (
+  max-width:
+  1024px
+) {
+  :root {
+    --radius-xl:
+      24px;
+
+    --space-16:
+      52px;
+  }
+
+  body {
+    font-size:
+      15.5px;
+  }
+}
+
+@media (
+  max-width:
+  768px
+) {
+  :root {
+    --control-height-lg:
+      50px;
+  }
+
+  .app-container {
+    padding-inline:
+      16px;
+  }
+
+  .button {
+    min-height:
+      44px;
+  }
+}
+
+@media (
+  max-width:
+  480px
+) {
+  :root {
+    --radius-lg:
+      16px;
+
+    --radius-xl:
+      20px;
+  }
+
+  body {
+    font-size:
+      15px;
+  }
+
+  .button-lg {
+    width:
+      100%;
+  }
+}
+
+/* ---------------------------------------------------------
+   15. VERY SMALL SCREENS
+   --------------------------------------------------------- */
+
+@media (
+  max-width:
+  360px
+) {
+  body {
+    min-width:
+      280px;
+  }
+
+  .app-container {
+    padding-inline:
+      12px;
+  }
+}
+
+/* ---------------------------------------------------------
+   16. POINTER / TOUCH IMPROVEMENTS
+   --------------------------------------------------------- */
+
+@media (
+  pointer:
+  coarse
+) {
+  button,
+  a,
+  input,
+  select,
+  textarea {
+    -webkit-tap-highlight-color:
+      transparent;
+  }
+
+  button {
+    touch-action:
+      manipulation;
+  }
+}
+
+/* ---------------------------------------------------------
+   17. REDUCED MOTION
+   --------------------------------------------------------- */
+
+@media (
+  prefers-reduced-motion:
+  reduce
+) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior:
+      auto !important;
+
+    animation-duration:
+      0.01ms !important;
+
+    animation-iteration-count:
+      1 !important;
+
+    transition-duration:
+      0.01ms !important;
+  }
+}

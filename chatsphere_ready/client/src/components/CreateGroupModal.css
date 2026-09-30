@@ -1,0 +1,386 @@
+.create-group-overlay {
+  position: fixed;
+
+  inset: 0;
+
+  z-index: 1000;
+
+  display: grid;
+
+  place-items: center;
+
+  padding: 20px;
+
+  background:
+    rgba(
+      16,
+      24,
+      40,
+      0.45
+    );
+}
+
+.create-group-modal {
+  width:
+    min(
+      100%,
+      470px
+    );
+
+  max-height: 88dvh;
+
+  display: flex;
+
+  flex-direction: column;
+
+  overflow: hidden;
+
+  border:
+    1px solid #e3e6ea;
+
+  border-radius: 16px;
+
+  background: #ffffff;
+
+  box-shadow:
+    0
+    24px
+    60px
+    rgba(
+      0,
+      0,
+      0,
+      0.18
+    );
+}
+
+.create-group-header {
+  display: flex;
+
+  align-items: flex-start;
+
+  justify-content:
+    space-between;
+
+  gap: 16px;
+
+  padding: 20px;
+
+  border-bottom:
+    1px solid #eceef1;
+}
+
+.create-group-header h2 {
+  margin: 0;
+
+  color: #202329;
+
+  font-size: 20px;
+}
+
+.create-group-header p {
+  margin:
+    5px
+    0
+    0;
+
+  color: #747981;
+
+  font-size: 13px;
+}
+
+.create-group-close {
+  width: 34px;
+  height: 34px;
+
+  display: grid;
+
+  place-items: center;
+
+  border: 0;
+
+  border-radius: 8px;
+
+  background: transparent;
+
+  color: #626872;
+
+  font-size: 25px;
+}
+
+.create-group-close:hover:not(
+  :disabled
+) {
+  background: #f1f3f5;
+}
+
+.create-group-form {
+  min-height: 0;
+
+  display: flex;
+
+  flex-direction: column;
+
+  padding:
+    18px
+    20px
+    20px;
+}
+
+.create-group-field {
+  margin-bottom: 14px;
+}
+
+.create-group-field label {
+  display: block;
+
+  margin-bottom: 7px;
+
+  color: #424750;
+
+  font-size: 13px;
+
+  font-weight: 600;
+}
+
+.create-group-field input {
+  width: 100%;
+
+  min-height: 44px;
+
+  padding:
+    10px
+    12px;
+
+  border:
+    1px solid #d8dce2;
+
+  border-radius: 10px;
+
+  outline: none;
+}
+
+.create-group-field input:focus {
+  border-color: #1f6feb;
+
+  box-shadow:
+    0
+    0
+    0
+    3px
+    rgba(
+      31,
+      111,
+      235,
+      0.1
+    );
+}
+
+.selected-group-members {
+  display: flex;
+
+  flex-wrap: wrap;
+
+  gap: 7px;
+
+  margin-bottom: 16px;
+}
+
+.selected-group-member {
+  display: inline-flex;
+
+  align-items: center;
+
+  gap: 7px;
+
+  padding:
+    6px
+    8px
+    6px
+    10px;
+
+  border-radius: 999px;
+
+  background: #edf3ff;
+
+  color: #255ea9;
+
+  font-size: 12px;
+
+  font-weight: 600;
+}
+
+.selected-group-member button {
+  width: 19px;
+  height: 19px;
+
+  display: grid;
+
+  place-items: center;
+
+  border: 0;
+
+  border-radius: 50%;
+
+  padding: 0;
+
+  background: #d8e7ff;
+
+  color: #255ea9;
+}
+
+.create-group-results {
+  min-height: 120px;
+
+  max-height: 240px;
+
+  overflow-y: auto;
+
+  margin-bottom: 12px;
+}
+
+.create-group-state {
+  padding: 24px;
+
+  text-align: center;
+
+  color: #777d86;
+
+  font-size: 13px;
+}
+
+.create-group-user {
+  width: 100%;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 12px;
+
+  padding:
+    10px
+    8px;
+
+  border: 0;
+
+  border-radius: 10px;
+
+  background: transparent;
+
+  color: #25282d;
+
+  text-align: left;
+}
+
+.create-group-user:hover {
+  background: #f5f7f9;
+}
+
+.create-group-avatar {
+  width: 39px;
+  height: 39px;
+
+  flex:
+    0
+    0
+    39px;
+
+  display: grid;
+
+  place-items: center;
+
+  border-radius: 50%;
+
+  background: #e3e8ef;
+
+  font-weight: 700;
+}
+
+.create-group-error {
+  margin-bottom: 12px;
+
+  padding: 10px;
+
+  border-radius: 8px;
+
+  background: #fff1f0;
+
+  color: #b42318;
+
+  font-size: 13px;
+}
+
+.create-group-footer {
+  display: flex;
+
+  align-items: center;
+
+  justify-content:
+    space-between;
+
+  gap: 14px;
+
+  padding-top: 14px;
+
+  border-top:
+    1px solid #eceef1;
+}
+
+.create-group-footer span {
+  color: #747981;
+
+  font-size: 12px;
+}
+
+.create-group-submit {
+  min-height: 40px;
+
+  border: 0;
+
+  border-radius: 9px;
+
+  padding:
+    0
+    16px;
+
+  background: #1f6feb;
+
+  color: #ffffff;
+
+  font-weight: 600;
+}
+
+.create-group-submit:hover:not(
+  :disabled
+) {
+  background: #195fc9;
+}
+
+.create-group-submit:disabled {
+  opacity: 0.55;
+
+  cursor: not-allowed;
+}
+
+@media (
+  max-width: 520px
+) {
+  .create-group-overlay {
+    align-items: end;
+
+    padding: 0;
+  }
+
+  .create-group-modal {
+    width: 100%;
+
+    max-height: 90dvh;
+
+    border-radius:
+      18px
+      18px
+      0
+      0;
+  }
+}
