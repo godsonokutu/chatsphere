@@ -173,8 +173,8 @@ GET /api/health
 ### 2. Clone and install
 
 ```bash
-git clone <your-repository-url>
-cd ChatSphere
+git clone https://github.com/godsonokutu/chatsphere.git
+cd chatsphere
 
 cd server
 npm ci
