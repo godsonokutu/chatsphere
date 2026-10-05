@@ -1,0 +1,75 @@
+name: Verify
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: verify-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+# No secrets or external services. A green run does NOT prove real MySQL
+# startup/migrations, SMTP verification, or end-to-end Socket.IO messaging.
+jobs:
+  client:
+    name: Client lint and build
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    defaults:
+      run:
+        working-directory: client
+        shell: bash
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: npm
+          cache-dependency-path: client/package-lock.json
+      - run: npm ci --no-audit --no-fund
+      - run: set -o pipefail; npm run lint 2>&1 | tee lint.log
+      - run: set -o pipefail; npm run build 2>&1 | tee build.log
+        env:
+          # Public compile-time configuration only; no API is contacted by build.
+          VITE_API_BASE_URL: http://127.0.0.1:5000/api
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: client-verification
+          path: client/*.log
+          if-no-files-found: ignore
+      - name: Record scope
+        if: always()
+        run: echo 'Client lint/build only; no browser or full end-to-end messaging test.' >> "$GITHUB_STEP_SUMMARY"
+
+  server:
+    name: Server syntax and isolated API smoke
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    defaults:
+      run:
+        working-directory: server
+        shell: bash
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: npm
+          cache-dependency-path: server/package-lock.json
+      - run: npm ci --no-audit --no-fund
+      - run: set -o pipefail; npm run check:syntax 2>&1 | tee syntax.log
+      - run: set -o pipefail; npm run test:smoke 2>&1 | tee smoke.log
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: server-verification
+          path: server/*.log
+          if-no-files-found: ignore
+      - name: Record scope
+        if: always()
+        run: echo 'Syntax and isolated real health-router HTTP test only. MySQL startup/migrations, SMTP-backed verification, authentication, persistence, and full end-to-end Socket.IO messaging remain unverified.' >> "$GITHUB_STEP_SUMMARY"

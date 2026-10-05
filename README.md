@@ -240,9 +240,17 @@ The Vite client normally runs at `http://localhost:5173` and the API at `http://
 
 ## Verification notes
 
-- Server JavaScript source passes `node --check` syntax validation in the prepared repository.
-- Real database startup and end-to-end messaging require a configured MySQL instance and SMTP provider.
-- Secrets are intentionally excluded from version control; only `.env.example` templates belong in the repository.
+[Verify workflow](.github/workflows/verify.yml) runs on pushes, pull requests and manual dispatches using Node.js 24 and locked installs (`npm ci`). It requires no external secrets or services:
+
+- Client: `npm run lint` and `npm run build`.
+- Server: `npm run check:syntax` recursively checks source, migrations, scripts and tests with `node --check`; it does not execute those modules.
+- Server: `npm run test:smoke` mounts the actual health router in an isolated Express app on loopback and checks HTTP 200, JSON content/type, the existing response contract, and an unknown-route 404. It does not start `server.js` or mock a successful database connection.
+
+Run the same commands locally after `npm ci` in each package. The client build requires `VITE_API_BASE_URL`; CI supplies the non-secret `http://127.0.0.1:5000/api` without contacting an API. Each CI job uploads command logs and writes its verification scope to the run summary. See [verification evidence](docs/verification/ci.md).
+
+**A green CI run is not production readiness.** Real MySQL startup, migrations/constraints, authenticated API access, SMTP-backed verification/outbox delivery, and full end-to-end messaging (browser, Socket.IO, persistence and reconnects) remain unverified. These require separately configured MySQL and SMTP services and integration tests. `/api/health` reports a router response, not database readiness.
+
+Secrets are intentionally excluded from version control; only `.env.example` templates belong in the repository.
 
 ## Engineering goals
 

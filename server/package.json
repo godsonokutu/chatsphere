@@ -5,7 +5,9 @@
   "main": "index.js",
   "scripts": {
     "start": "node src/server.js",
-    "dev": "nodemon src/server.js"
+    "dev": "nodemon src/server.js",
+    "check:syntax": "node scripts/check-syntax.cjs",
+    "test:smoke": "node --test test/health.test.cjs"
   },
   "keywords": [],
   "author": "",
