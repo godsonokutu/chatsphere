@@ -7,7 +7,8 @@
     "start": "node src/server.js",
     "dev": "nodemon src/server.js",
     "check:syntax": "node scripts/check-syntax.cjs",
-    "test:smoke": "node --test test/health.test.cjs"
+    "test:smoke": "node --test test/health.test.cjs",
+    "test:mobile": "node --test test/mobile-auth.test.cjs"
   },
   "keywords": [],
   "author": "",

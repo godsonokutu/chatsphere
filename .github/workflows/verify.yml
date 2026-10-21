@@ -64,6 +64,7 @@ jobs:
       - run: npm ci --no-audit --no-fund
       - run: set -o pipefail; npm run check:syntax 2>&1 | tee syntax.log
       - run: set -o pipefail; npm run test:smoke 2>&1 | tee smoke.log
+      - run: set -o pipefail; npm run test:mobile 2>&1 | tee mobile-auth.log
       - uses: actions/upload-artifact@v4
         if: always()
         with:
@@ -73,3 +74,36 @@ jobs:
       - name: Record scope
         if: always()
         run: echo 'Syntax and isolated real health-router HTTP test only. MySQL startup/migrations, SMTP-backed verification, authentication, persistence, and full end-to-end Socket.IO messaging remain unverified.' >> "$GITHUB_STEP_SUMMARY"
+
+  mobile:
+    name: Mobile types, contracts and JS bundles
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    defaults:
+      run:
+        working-directory: mobile
+        shell: bash
+    env:
+      CI: '1'
+      EXPO_NO_TELEMETRY: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: npm
+          cache-dependency-path: mobile/package-lock.json
+      - run: npm ci --no-audit --no-fund
+      - run: set -o pipefail; npm run typecheck 2>&1 | tee typecheck.log
+      - run: set -o pipefail; npm test 2>&1 | tee test.log
+      - run: set -o pipefail; npm run export:web 2>&1 | tee web-export.log
+      - run: set -o pipefail; npm run export:native 2>&1 | tee native-export.log
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: mobile-verification
+          path: mobile/*.log
+          if-no-files-found: ignore
+      - name: Record scope
+        if: always()
+        run: echo 'Mobile type checks, session/message logic and JavaScript packaging only. No signed APK/IPA, physical-device test, live MySQL/SMTP or real end-to-end messaging is verified.' >> "$GITHUB_STEP_SUMMARY"

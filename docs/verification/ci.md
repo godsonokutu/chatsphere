@@ -19,6 +19,10 @@ The smoke test asserts status 200, JSON content type and exact current body (inc
 
 The `Verify` workflow records results against each commit in GitHub Actions. Its two jobs upload `client-verification` (lint/build logs) and `server-verification` (syntax/smoke logs); failures propagate through `pipefail`. Always-run summaries state scope. These local results are not claims that a hosted run has passed: inspect the run attached to the CI commit for hosted status and logs.
 
+## Mobile extension — 2026-10-21
+
+The workflow now also runs server `test:mobile` and a third `mobile` job for TypeScript, session/message logic tests, and Android/iOS/web JavaScript exports. It uploads `mobile-verification` logs. The mobile auth HTTP tests explicitly inject the auth-service boundary; they do not establish real MySQL-backed login, token rotation or session revocation. See [mobile evidence](mobile.md) for this change's local results and UI checks.
+
 ## Explicitly unverified
 
 - Real MySQL authentication/startup, migrations, constraints and durable writes.

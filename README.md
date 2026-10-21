@@ -22,6 +22,10 @@ ChatSphere is a full-stack real-time messaging application built as a production
 
 ## Architecture
 
+An Android/iPhone client is now available in [`mobile/`](mobile/README.md), built with React Native, Expo and TypeScript. It shares this backend's accounts, conversation history and Socket.IO events. The first version includes authentication, inbox/search, direct conversations, existing group chats and manual message retries, plus an explicit local sample preview.
+
+Start with `cd mobile`, `npm ci`, then `npm start` for Expo Go or `npm run web` for the browser preview. See the [mobile setup guide](mobile/README.md) and [verification scope](docs/verification/mobile.md). A signed native app, physical-device testing and live MySQL/SMTP messaging remain separate gates.
+
 ```mermaid
 flowchart LR
     UI[React + Vite client]
@@ -105,6 +109,8 @@ POST /api/auth/verify
 POST /api/auth/login
 POST /api/auth/refresh
 POST /api/auth/logout
+POST /api/auth/mobile/login
+POST /api/auth/mobile/refresh
 ```
 
 ### Users
@@ -245,6 +251,8 @@ The Vite client normally runs at `http://localhost:5173` and the API at `http://
 - Client: `npm run lint` and `npm run build`.
 - Server: `npm run check:syntax` recursively checks source, migrations, scripts and tests with `node --check`; it does not execute those modules.
 - Server: `npm run test:smoke` mounts the actual health router in an isolated Express app on loopback and checks HTTP 200, JSON content/type, the existing response contract, and an unknown-route 404. It does not start `server.js` or mock a successful database connection.
+- Server: `npm run test:mobile` checks mobile token transport over loopback HTTP with an injected auth-service boundary. It does not execute database-backed authentication or rotation.
+- Mobile: TypeScript checks, session/message logic tests and Android/iOS/web JavaScript exports. These do not compile or sign native binaries or exercise real devices. See [mobile evidence](docs/verification/mobile.md).
 
 Run the same commands locally after `npm ci` in each package. The client build requires `VITE_API_BASE_URL`; CI supplies the non-secret `http://127.0.0.1:5000/api` without contacting an API. Each CI job uploads command logs and writes its verification scope to the run summary. See [verification evidence](docs/verification/ci.md).
 
