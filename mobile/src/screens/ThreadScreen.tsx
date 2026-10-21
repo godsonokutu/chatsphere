@@ -10,6 +10,7 @@ import {
   TextInput,
   View,
 } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { titleOf } from "../core/messages";
 import type { Conversation, Message, User } from "../core/types";
 import type { ChatState } from "../useChat";
@@ -35,6 +36,7 @@ export function ThreadScreen({
   user: User;
   onBack: () => void;
 }) {
+  const insets = useSafeAreaInsets();
   const [draft, setDraft] = useState("");
   const [info, setInfo] = useState(false);
   const messages = chat.messages[conversation.id] || [];
@@ -205,7 +207,8 @@ export function ThreadScreen({
   return (
     <KeyboardAvoidingView
       style={styles.screen}
-      behavior={Platform.OS === "ios" ? "padding" : undefined}
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+      keyboardVerticalOffset={insets.top}
     >
       <View
         style={{

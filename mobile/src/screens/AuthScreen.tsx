@@ -7,6 +7,7 @@ import {
   Text,
   View,
 } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 import type { Session } from "../core/session";
 import type { Transport } from "../core/http";
 import { ApiError } from "../core/http";
@@ -23,6 +24,7 @@ export function AuthScreen({
   configurationError: string;
   onPreview?: () => void;
 }) {
+  const insets = useSafeAreaInsets();
   const [mode, setMode] = useState<"login" | "register" | "verify">("login");
   const [identity, setIdentity] = useState("");
   const [username, setUsername] = useState("");
@@ -101,7 +103,8 @@ export function AuthScreen({
   return (
     <KeyboardAvoidingView
       style={styles.screen}
-      behavior={Platform.OS === "ios" ? "padding" : undefined}
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+      keyboardVerticalOffset={insets.top}
     >
       <ScrollView
         keyboardShouldPersistTaps="handled"

@@ -1,6 +1,7 @@
 import XCTest
 
 final class SmokeTests: XCTestCase {
+  @MainActor
   func testPreviewNavigationMessageAndRelaunch() {
     continueAfterFailure = false
     let app = XCUIApplication(bundleIdentifier: "dev.godsonokutu.chatsphere.preview")

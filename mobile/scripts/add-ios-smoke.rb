@@ -13,6 +13,7 @@ reference.source_tree = "<absolute>"
 target.add_file_references([reference])
 target.build_configurations.each do |configuration|
   configuration.build_settings["SWIFT_VERSION"] = "5.0"
+  configuration.build_settings["ENABLE_TESTING_SEARCH_PATHS"] = "YES"
   configuration.build_settings["GENERATE_INFOPLIST_FILE"] = "YES"
   configuration.build_settings["PRODUCT_BUNDLE_IDENTIFIER"] = "dev.godsonokutu.chatsphere.preview.nativesmoke"
   configuration.build_settings["TEST_TARGET_NAME"] = app.name

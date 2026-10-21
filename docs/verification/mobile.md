@@ -79,3 +79,10 @@ build-policy tests passed, bringing the mobile suite to 18 tests. No saved Expo
 login or Expo token was present; physical-iPhone signing still requires an
 owner-controlled account/team. See [build guide](../../mobile/BUILDING.md) and
 [dependency review](mobile-dependencies.md).
+
+The Android 16 UI smoke run exposed a native IME regression: the keyboard
+covered the composer, and a send tap entered a newline instead. Native screen
+and hierarchy evidence established the overlap. The chat and authentication
+screens now use explicit Android height avoidance and the top safe-area offset;
+iOS padding avoidance uses the same offset. The native send assertions keep
+the keyboard open, so they exercise this behavior rather than dismissing it.

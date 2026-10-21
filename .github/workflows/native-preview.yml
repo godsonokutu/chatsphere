@@ -89,7 +89,7 @@ jobs:
 
   ios:
     name: iOS simulator build and UI
-    runs-on: macos-26
+    runs-on: macos-26-intel
     timeout-minutes: 45
     defaults:
       run:
