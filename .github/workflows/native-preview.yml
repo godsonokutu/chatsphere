@@ -112,7 +112,7 @@ jobs:
           workspace="$(find ios -maxdepth 1 -name '*.xcworkspace' -print -quit)"
           scheme="$(xcodebuild -list -json -workspace "$workspace" | node -e 'let s="";process.stdin.on("data",d=>s+=d).on("end",()=>{const name=JSON.parse(s).workspace.schemes.find(s=>s.startsWith("ChatSphere"));if(!name)process.exit(1);console.log(name)})')"
           set +e
-          xcodebuild -workspace "$workspace" -scheme "$scheme" -configuration Release -sdk iphonesimulator -arch x86_64 -destination 'generic/platform=iOS Simulator' -derivedDataPath ios-build -jobs 2 ONLY_ACTIVE_ARCH=YES CODE_SIGNING_ALLOWED=NO > ios-build.log 2>&1 &
+          xcodebuild -workspace "$workspace" -scheme "$scheme" -configuration Release -sdk iphonesimulator -destination 'generic/platform=iOS Simulator' -derivedDataPath ios-build -jobs 2 ARCHS=x86_64 ONLY_ACTIVE_ARCH=YES CODE_SIGNING_ALLOWED=NO > ios-build.log 2>&1 &
           build_pid=$!
           while kill -0 "$build_pid" 2>/dev/null; do
             date -u
