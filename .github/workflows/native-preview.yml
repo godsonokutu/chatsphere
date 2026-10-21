@@ -111,7 +111,20 @@ jobs:
           set -o pipefail
           workspace="$(find ios -maxdepth 1 -name '*.xcworkspace' -print -quit)"
           scheme="$(xcodebuild -list -json -workspace "$workspace" | node -e 'let s="";process.stdin.on("data",d=>s+=d).on("end",()=>{const name=JSON.parse(s).workspace.schemes.find(s=>s.startsWith("ChatSphere"));if(!name)process.exit(1);console.log(name)})')"
-          xcodebuild -workspace "$workspace" -scheme "$scheme" -configuration Release -sdk iphonesimulator -destination 'generic/platform=iOS Simulator' -derivedDataPath ios-build CODE_SIGNING_ALLOWED=NO 2>&1 | tee ios-build.log
+          set +e
+          xcodebuild -workspace "$workspace" -scheme "$scheme" -configuration Release -sdk iphonesimulator -arch x86_64 -destination 'generic/platform=iOS Simulator' -derivedDataPath ios-build -jobs 2 ONLY_ACTIVE_ARCH=YES CODE_SIGNING_ALLOWED=NO > ios-build.log 2>&1 &
+          build_pid=$!
+          while kill -0 "$build_pid" 2>/dev/null; do
+            date -u
+            ps -p "$build_pid" -o pid=,etime=,%cpu=,rss=
+            tail -n 2 ios-build.log
+            sleep 20
+          done
+          wait "$build_pid"
+          result=$?
+          set -e
+          tail -n 80 ios-build.log
+          exit "$result"
       - name: Package simulator app
         run: |
           mkdir -p artifacts
@@ -133,7 +146,7 @@ jobs:
           xcrun simctl install "$simulator" "$app"
           ruby scripts/add-ios-smoke.rb
           workspace="$(find ios -maxdepth 1 -name '*.xcworkspace' -print -quit)"
-          xcodebuild -workspace "$workspace" -scheme ChatSphereNativeSmoke -configuration Release -destination "platform=iOS Simulator,id=$simulator" -derivedDataPath ios-build -resultBundlePath ios-smoke.xcresult CODE_SIGNING_ALLOWED=NO test 2>&1 | tee ios-ui.log
+          xcodebuild -workspace "$workspace" -scheme ChatSphereNativeSmoke -configuration Release -destination "platform=iOS Simulator,id=$simulator" -derivedDataPath ios-build -resultBundlePath ios-smoke.xcresult -jobs 2 ONLY_ACTIVE_ARCH=YES CODE_SIGNING_ALLOWED=NO test 2>&1 | tee ios-ui.log
       - uses: actions/upload-artifact@v4
         if: always()
         with:

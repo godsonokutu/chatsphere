@@ -28,7 +28,8 @@ production use. No Metro server, API, account or EAS login is needed to use it.
 The APK includes arm64 and x86_64; 32-bit-only phones are not included.
 
 The iOS workflow uploads `ChatSphere-iOS-Simulator`, containing an unsigned
-simulator `.app` archive and checksum. **It cannot be installed on an iPhone.**
+Intel (x86_64) simulator `.app` archive and checksum. **It cannot be installed
+on an iPhone or an ARM-only simulator.**
 Download and extract it on a Mac, then install into a booted simulator using
 `xcrun simctl install booted path/to/ChatSpherePreview.app`.
 

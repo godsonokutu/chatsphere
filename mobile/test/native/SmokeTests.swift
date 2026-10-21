@@ -41,7 +41,7 @@ final class SmokeTests: XCTestCase {
       NSPredicate(format: "label CONTAINS %@", "Mobile preview")
     ).firstMatch
     XCTAssertTrue(sample.waitForExistence(timeout: 10))
-    tap(app.buttons["Leave preview"], scrolling: true)
+    tap(app.buttons.matching(NSPredicate(format: "label == %@", "Leave preview")).firstMatch, scrolling: true)
     XCTAssertTrue(app.staticTexts["Email or phone number"].waitForExistence(timeout: 10))
     app.terminate()
     app.launch()
