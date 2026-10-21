@@ -46,3 +46,7 @@ artifacts/
 ios-build/
 ui-output/
 *-ui.xml
+
+# Python test helper bytecode
+__pycache__/
+*.pyc

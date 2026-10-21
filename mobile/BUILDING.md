@@ -1,7 +1,8 @@
 # Native builds and release gates
 
 The `Native preview` workflow compiles actual native projects and exercises the
-sample interface with Maestro on an Android emulator and iOS simulator. Inspect
+sample interface with Android UI Automator on an emulator and Apple XCUITest
+on an iOS simulator. Inspect
 the run attached to the commit before treating any build or test as passed.
 The existing `Verify` workflow independently tests the real backend and mobile
 JavaScript adapters.
@@ -31,7 +32,8 @@ simulator `.app` archive and checksum. **It cannot be installed on an iPhone.**
 Download and extract it on a Mac, then install into a booted simulator using
 `xcrun simctl install booted path/to/ChatSpherePreview.app`.
 
-Build logs, JUnit UI results and screenshots are separate evidence artifacts.
+Build logs, Android JUnit results and iOS XCTest results/screenshots are
+separate evidence artifacts.
 An uploaded installer establishes compilation; inspect the UI job result to
 establish whether the smoke flow passed. GitHub artifact retention is 30 days.
 

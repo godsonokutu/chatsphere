@@ -59,10 +59,10 @@ Only generated credentials for disposable test services are used. No production 
 ## Native build continuation
 
 The `Native preview` workflow compiles a self-contained Android preview APK and
-an unsigned iOS simulator app, then exercises the native sample UI using pinned
-Maestro 2.11.0. The archive checksum is verified before execution. The flow
+an unsigned iOS simulator app, then exercises the native sample UI using
+Android UI Automator and Apple XCUITest. The flow
 opens a conversation, enters/sends a sample message, navigates to the profile,
-leaves preview and relaunches the app. CI uploads compiler logs, UI results,
+leaves preview and relaunches the app. CI uploads compiler logs, Android JUnit/iOS XCTest results,
 screenshots and installer integrity evidence. Inspect the actual run result;
 the presence of this workflow does not prove a native build has passed.
 
