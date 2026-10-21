@@ -1,0 +1,108 @@
+{
+  "startedAt": "2026-10-21T14:51:20.998Z",
+  "node": "v24.14.1",
+  "scope": "Real MySQL, actual mobile JS adapters, real API/Socket.IO and TLS SMTP capture",
+  "checks": [
+    {
+      "name": "MySQL migrations apply to a fresh database",
+      "status": "passed",
+      "durationMs": 6528
+    },
+    {
+      "name": "The real API starts after MySQL authentication",
+      "status": "passed",
+      "durationMs": 1479
+    },
+    {
+      "name": "Registration, encrypted outbox and verification over authenticated TLS SMTP",
+      "status": "passed",
+      "durationMs": 5878
+    },
+    {
+      "name": "Actual mobile session adapters sign in and persist rotating refresh tokens",
+      "status": "passed",
+      "durationMs": 921
+    },
+    {
+      "name": "User search and direct-conversation creation use the real API",
+      "status": "passed",
+      "durationMs": 819
+    },
+    {
+      "name": "Mobile Socket.IO send, receive and history persist to MySQL",
+      "status": "passed",
+      "durationMs": 87
+    },
+    {
+      "name": "Delivery and read acknowledgements persist in database receipts",
+      "status": "passed",
+      "durationMs": 25
+    },
+    {
+      "name": "Lost-acknowledgement retry is idempotent and rejects conflicting content",
+      "status": "passed",
+      "durationMs": 159
+    },
+    {
+      "name": "Conversation authorization blocks outsiders over HTTP and Socket.IO",
+      "status": "passed",
+      "durationMs": 17
+    },
+    {
+      "name": "Group messages deliver to members; removal revokes history access",
+      "status": "passed",
+      "durationMs": 68
+    },
+    {
+      "name": "Database foreign-key constraints reject orphan messages",
+      "status": "passed",
+      "durationMs": 11
+    },
+    {
+      "name": "API restart preserves sessions/history and mobile clients reconnect",
+      "status": "passed",
+      "durationMs": 1627
+    },
+    {
+      "name": "Browser cookie login/refresh remains separate from native token transport",
+      "status": "passed",
+      "durationMs": 749
+    },
+    {
+      "name": "JWT expiry disconnects the socket and the actual mobile adapter refreshes/reconnects",
+      "status": "passed",
+      "durationMs": 4979
+    },
+    {
+      "name": "Concurrent mobile refresh, stale-token grace and replay revocation work against MySQL",
+      "status": "passed",
+      "durationMs": 96
+    },
+    {
+      "name": "Logout revokes HTTP and already-connected socket sessions",
+      "status": "passed",
+      "durationMs": 30
+    }
+  ],
+  "limitations": [
+    "No physical native device or SecureStore test",
+    "No external email-provider/inbox delivery",
+    "No APK/IPA signing or production deployment"
+  ],
+  "mysqlBinary": "C:\\Program Files\\MySQL\\MySQL Server 8.0\\bin\\mysqld.exe  Ver 8.0.44 for Win64 on x86_64 (MySQL Community Server - GPL)",
+  "mysql": "8.0.44",
+  "migrations": [
+    "20260811190639-create-users.js",
+    "20260812184124-standardize-user-column-names.js",
+    "20260814000422-standardize-user-index-names.js",
+    "20260827124206-create-verification-challenges.js",
+    "20260828111116-create-notification-outbox.js",
+    "20260922081241-create-users-sessions.js",
+    "20260922083931-add-refresh-generation-to-user-sessions.js",
+    "20260922234334-create-conversations-and-members.js",
+    "20260923002839-create-messages-and-receipts.js",
+    "20260923024859-add-read-cursor-to-conversation-members.js"
+  ],
+  "status": "passed",
+  "completedAt": "2026-10-21T14:52:06.609Z"
+}

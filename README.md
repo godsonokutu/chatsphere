@@ -22,6 +22,10 @@ ChatSphere is a full-stack real-time messaging application built as a production
 
 ## Architecture
 
+An Android/iPhone client is now available in [`mobile/`](mobile/README.md), built with React Native, Expo and TypeScript. It shares this backend's accounts, conversation history and Socket.IO events. The first version includes authentication, inbox/search, direct conversations, existing group chats and manual message retries, plus an explicit local sample preview.
+
+Start with `cd mobile`, `npm ci`, then `npm start` for Expo Go or `npm run web` for the browser preview. See the [mobile setup guide](mobile/README.md), [native build guide](mobile/BUILDING.md) and [verification scope](docs/verification/mobile.md). Production signing, physical-device testing and external email-provider delivery remain separate gates.
+
 ```mermaid
 flowchart LR
     UI[React + Vite client]
@@ -105,6 +109,8 @@ POST /api/auth/verify
 POST /api/auth/login
 POST /api/auth/refresh
 POST /api/auth/logout
+POST /api/auth/mobile/login
+POST /api/auth/mobile/refresh
 ```
 
 ### Users
@@ -240,15 +246,18 @@ The Vite client normally runs at `http://localhost:5173` and the API at `http://
 
 ## Verification notes
 
-[Verify workflow](.github/workflows/verify.yml) runs on pushes, pull requests and manual dispatches using Node.js 24 and locked installs (`npm ci`). It requires no external secrets or services:
+[Verify workflow](.github/workflows/verify.yml) runs on pushes, pull requests and manual dispatches using Node.js 24 and locked installs (`npm ci`). It requires no production credentials. Its integration job uses a disposable MySQL service and a local TLS SMTP capture server:
 
 - Client: `npm run lint` and `npm run build`.
 - Server: `npm run check:syntax` recursively checks source, migrations, scripts and tests with `node --check`; it does not execute those modules.
 - Server: `npm run test:smoke` mounts the actual health router in an isolated Express app on loopback and checks HTTP 200, JSON content/type, the existing response contract, and an unknown-route 404. It does not start `server.js` or mock a successful database connection.
+- Server: `npm run test:mobile` checks mobile token transport over loopback HTTP with an injected auth-service boundary. It does not execute database-backed authentication or rotation.
+- Mobile: TypeScript checks, session/message logic tests and Android/iOS/web JavaScript exports. These do not compile or sign native binaries or exercise real devices. See [mobile evidence](docs/verification/mobile.md).
+- Integration: `npm run test:integration` in `server` runs fresh MySQL migrations, registration/email verification, actual mobile JavaScript session/realtime adapters, delivery/read receipts, authorization, retries, restart recovery and session rotation/revocation. See the [runner guide](server/test/integration/README.md) and [integration report](docs/verification/mobile-integration.json).
 
 Run the same commands locally after `npm ci` in each package. The client build requires `VITE_API_BASE_URL`; CI supplies the non-secret `http://127.0.0.1:5000/api` without contacting an API. Each CI job uploads command logs and writes its verification scope to the run summary. See [verification evidence](docs/verification/ci.md).
 
-**A green CI run is not production readiness.** Real MySQL startup, migrations/constraints, authenticated API access, SMTP-backed verification/outbox delivery, and full end-to-end messaging (browser, Socket.IO, persistence and reconnects) remain unverified. These require separately configured MySQL and SMTP services and integration tests. `/api/health` reports a router response, not database readiness.
+**A green CI run is not production readiness.** Integration checks exercise real MySQL persistence and authenticated API/Socket.IO flows through the mobile JavaScript adapters, with verification email received by a local TLS SMTP server. Physical Android/iPhone behavior, native secure storage, browser-to-phone UI flows, external email-provider delivery and signed APK/IPA releases remain separate gates. `/api/health` reports a router response, not database readiness.
 
 Secrets are intentionally excluded from version control; only `.env.example` templates belong in the repository.
 

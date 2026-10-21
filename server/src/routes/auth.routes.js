@@ -23,6 +23,14 @@ const {
 const router =
   express.Router();
 
+const { createMobileAuthController } = require("../controllers/mobileAuth.controller");
+const mobileAuth = createMobileAuthController(require("../services/auth.service"));
+
+// Share limiter instances with browser routes so switching transports does not
+// grant a fresh login/refresh quota. These routes never set refresh cookies.
+router.post("/mobile/login", loginLimiter, mobileAuth.login);
+router.post("/mobile/refresh", refreshLimiter, mobileAuth.refresh);
+
 // ======================================================
 // REGISTER
 // ======================================================

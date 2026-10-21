@@ -207,11 +207,14 @@ async function startServer() {
 
     httpServer.listen(
       env.PORT,
+      env.BIND_HOST,
       () => {
         logger.info(
           {
             port:
               env.PORT,
+
+            host: env.BIND_HOST,
 
             clientOrigin:
               env.CLIENT_ORIGIN,

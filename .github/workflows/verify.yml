@@ -12,8 +12,9 @@ concurrency:
   group: verify-${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
-# No secrets or external services. A green run does NOT prove real MySQL
-# startup/migrations, SMTP verification, or end-to-end Socket.IO messaging.
+# Integration uses a disposable MySQL service and local TLS SMTP capture.
+# No production credentials. Physical devices, external inbox delivery and
+# deployment remain separate gates even when every job is green.
 jobs:
   client:
     name: Client lint and build
@@ -64,6 +65,7 @@ jobs:
       - run: npm ci --no-audit --no-fund
       - run: set -o pipefail; npm run check:syntax 2>&1 | tee syntax.log
       - run: set -o pipefail; npm run test:smoke 2>&1 | tee smoke.log
+      - run: set -o pipefail; npm run test:mobile 2>&1 | tee mobile-auth.log
       - uses: actions/upload-artifact@v4
         if: always()
         with:
@@ -72,4 +74,89 @@ jobs:
           if-no-files-found: ignore
       - name: Record scope
         if: always()
-        run: echo 'Syntax and isolated real health-router HTTP test only. MySQL startup/migrations, SMTP-backed verification, authentication, persistence, and full end-to-end Socket.IO messaging remain unverified.' >> "$GITHUB_STEP_SUMMARY"
+        run: echo 'This job checks syntax, the isolated health route and native-auth HTTP transport. Real MySQL, SMTP, session logic and messaging are checked in the separate integration job.' >> "$GITHUB_STEP_SUMMARY"
+
+  mobile:
+    name: Mobile types, contracts and JS bundles
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    defaults:
+      run:
+        working-directory: mobile
+        shell: bash
+    env:
+      CI: '1'
+      EXPO_NO_TELEMETRY: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: npm
+          cache-dependency-path: mobile/package-lock.json
+      - run: npm ci --no-audit --no-fund
+      - run: set -o pipefail; npm run typecheck 2>&1 | tee typecheck.log
+      - run: set -o pipefail; npm test 2>&1 | tee test.log
+      - run: set -o pipefail; npm run export:web 2>&1 | tee web-export.log
+      - run: set -o pipefail; npm run export:native 2>&1 | tee native-export.log
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: mobile-verification
+          path: mobile/*.log
+          if-no-files-found: ignore
+      - name: Record scope
+        if: always()
+        run: echo 'This job checks mobile types, session/message logic and JavaScript packaging. Real services are checked in the separate integration job; signed APK/IPA and physical devices remain unverified.' >> "$GITHUB_STEP_SUMMARY"
+
+  integration:
+    name: MySQL, TLS SMTP and mobile integration
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    services:
+      mysql:
+        image: mysql:8.0
+        env:
+          MYSQL_ROOT_PASSWORD: chatsphere-ci-only
+          MYSQL_ROOT_HOST: '%'
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="mysqladmin ping -h 127.0.0.1 --password=chatsphere-ci-only"
+          --health-interval=5s
+          --health-timeout=5s
+          --health-retries=20
+    defaults:
+      run:
+        working-directory: server
+        shell: bash
+    env:
+      CHATSPHERE_IT_EXTERNAL_MYSQL: '1'
+      CHATSPHERE_IT_DB_HOST: 127.0.0.1
+      CHATSPHERE_IT_DB_PORT: '3306'
+      # Synthetic credential for this disposable service, never a real secret.
+      CHATSPHERE_IT_ROOT_PASSWORD: chatsphere-ci-only
+      CHATSPHERE_IT_REPORT: ../docs/verification/mobile-integration-ci.json
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: npm
+          cache-dependency-path: |
+            server/package-lock.json
+            mobile/package-lock.json
+      - run: npm ci --no-audit --no-fund
+      - run: npm ci --prefix ../mobile --no-audit --no-fund
+      - run: set -o pipefail; npm run test:integration 2>&1 | tee integration.log
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: real-service-integration
+          path: |
+            server/integration.log
+            docs/verification/mobile-integration-ci.json
+          if-no-files-found: ignore
+      - name: Record scope
+        if: always()
+        run: echo 'Real MySQL migrations, actual mobile JS session/realtime adapters, real API/Socket.IO, TLS SMTP capture and persistence. No native SecureStore/physical-device test, external email-provider delivery or signed installer is verified.' >> "$GITHUB_STEP_SUMMARY"

@@ -7,7 +7,9 @@
     "start": "node src/server.js",
     "dev": "nodemon src/server.js",
     "check:syntax": "node scripts/check-syntax.cjs",
-    "test:smoke": "node --test test/health.test.cjs"
+    "test:smoke": "node --test test/health.test.cjs",
+    "test:mobile": "node --test test/mobile-auth.test.cjs",
+    "test:integration": "node test/integration/run.cjs"
   },
   "keywords": [],
   "author": "",
@@ -38,8 +40,10 @@
     "zod": "^4.4.3"
   },
   "devDependencies": {
+    "mailparser": "^3.10.0",
     "nodemon": "^3.1.14",
     "sequelize-cli": "^6.6.5",
+    "smtp-server": "^3.20.2",
     "socket.io-client": "^4.8.3"
   }
 }

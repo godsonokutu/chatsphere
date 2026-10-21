@@ -1,0 +1,46 @@
+name: Inspect native evidence
+
+on:
+  pull_request:
+    paths: ['.github/workflows/inspect-native-evidence.yml']
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  inspect:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    env:
+      GH_TOKEN: ${{ github.token }}
+      SOURCE_BRANCH: ${{ github.head_ref || github.ref_name }}
+    steps:
+      - name: Retrieve latest Android native evidence
+        shell: bash
+        run: |
+          run_id=""
+          for candidate in $(gh api --method GET "repos/$GITHUB_REPOSITORY/actions/runs" -f branch="$SOURCE_BRANCH" -F per_page=30 --jq '.workflow_runs[] | select(.name == "Native preview") | .id'); do
+            count="$(gh api "repos/$GITHUB_REPOSITORY/actions/runs/$candidate/artifacts" --jq '.artifacts | map(select(.name == "android-native-evidence")) | length')"
+            if [[ "$count" -gt 0 ]]; then run_id="$candidate"; break; fi
+          done
+          test -n "$run_id"
+          gh run download "$run_id" --repo "$GITHUB_REPOSITORY" --name android-native-evidence --dir evidence
+      - name: Show native hierarchy and screenshot
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          import pathlib, base64
+          root = pathlib.Path("evidence")
+          for file in root.rglob("last-hierarchy.xml"):
+              print("NATIVE_HIERARCHY_BEGIN")
+              print(file.read_text())
+              print("NATIVE_HIERARCHY_END")
+          for file in root.rglob("android-ui.xml"):
+              print(file.read_text())
+          for file in root.rglob("failure.png"):
+              print("NATIVE_SCREENSHOT_BEGIN")
+              print(base64.b64encode(file.read_bytes()).decode("ascii"))
+              print("NATIVE_SCREENSHOT_END")
+          PY
