@@ -42,6 +42,8 @@ const envSchema =
         .max(65535)
         .default(5000),
 
+    BIND_HOST: z.enum(["127.0.0.1", "0.0.0.0", "::1", "::"]).optional(),
+
     CLIENT_ORIGIN:
       z
         .string()

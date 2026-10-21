@@ -17,17 +17,21 @@ The smoke test asserts status 200, JSON content type and exact current body (inc
 
 ## Hosted evidence
 
-The `Verify` workflow records results against each commit in GitHub Actions. Its two jobs upload `client-verification` (lint/build logs) and `server-verification` (syntax/smoke logs); failures propagate through `pipefail`. Always-run summaries state scope. These local results are not claims that a hosted run has passed: inspect the run attached to the CI commit for hosted status and logs.
+The `Verify` workflow records results against each commit in GitHub Actions. The original jobs upload `client-verification` (lint/build logs) and `server-verification` (syntax/smoke logs); failures propagate through `pipefail`. Mobile and integration extensions are described below. Always-run summaries state scope. Local results are not claims that a hosted run has passed: inspect the run attached to the commit for hosted status and logs.
 
 ## Mobile extension — 2026-10-21
 
 The workflow now also runs server `test:mobile` and a third `mobile` job for TypeScript, session/message logic tests, and Android/iOS/web JavaScript exports. It uploads `mobile-verification` logs. The mobile auth HTTP tests explicitly inject the auth-service boundary; they do not establish real MySQL-backed login, token rotation or session revocation. See [mobile evidence](mobile.md) for this change's local results and UI checks.
 
+## Real-service integration extension - 2026-10-21
+
+A fourth job runs the actual mobile JavaScript adapters against the real API, a disposable MySQL service and authenticated TLS SMTP capture. It applies all migrations to a fresh schema, uses synthetic accounts, and covers verification, persistence, authorization, receipts, retries, restart recovery and session rotation/revocation. Its `real-service-integration` artifact includes the command log and a machine-readable report. Production credentials are not used. See [current integration evidence](mobile-integration.json) and [runner instructions](../../server/test/integration/README.md).
+
 ## Explicitly unverified
 
-- Real MySQL authentication/startup, migrations, constraints and durable writes.
-- SMTP-backed account verification and notification-outbox delivery.
-- Authenticated API/Socket.IO flows, authorization and session revocation.
-- Full browser-to-API/Socket.IO-to-MySQL messaging, receipts and reconnect behavior.
+- Native SecureStore, physical Android/iPhone UI and background/network behavior.
+- Delivery to external email inboxes through the selected production provider.
+- Full browser-to-phone and phone-to-phone UI flows.
+- Native binary compilation/signing and production deployment.
 
-These require configured MySQL and SMTP services plus separate integration/end-to-end coverage. A passing health-router test is not readiness, and syntax checks do not execute imports or validate runtime compatibility. No external secrets are required or referenced by this workflow. Dependency audit/security certification is outside these checks.
+The real-service suite establishes the backend and JavaScript adapter paths in isolation; it does not establish these native/provider/production properties. A passing health-router test is not readiness, and syntax checks do not execute imports or validate runtime compatibility. No production credentials are required by this workflow. Dependency audit/security certification is outside these checks.

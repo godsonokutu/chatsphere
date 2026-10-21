@@ -49,7 +49,7 @@ Set `EXPO_PUBLIC_API_URL` in `.env` to the real API URL ending in `/api`, then r
 
 Release builds require HTTPS. Expo Go development can use a reachable LAN HTTP API, for example `http://192.168.1.10:5000/api`. A physical phone's `localhost` points to the phone. Keep LAN testing on a trusted network and allow only the required development port in Windows Firewall; do not turn the firewall off. Android/iOS standalone builds may require platform-specific development networking configuration for HTTP; use HTTPS for standalone testing.
 
-Start and validate the existing MySQL migrations, backend and SMTP/outbox separately using the root README. Account verification requires a working email provider. No database, email service or public API was provisioned by this change.
+Start and validate the existing MySQL migrations, backend and SMTP/outbox separately using the root README. Account verification outside the integration suite requires a working email provider. The integration runner creates a disposable local database and TLS SMTP capture service; no production database, email provider or public API was provisioned.
 
 ## Session and failure behavior
 
@@ -70,11 +70,12 @@ cd ../server
 npm run check:syntax
 npm run test:smoke
 npm run test:mobile
+npm run test:integration
 ```
 
 `export:native` creates Android/iOS JavaScript bundles, not installable APK/IPA files. Native compilation, signing, provisioning and app-store submission need separately configured platform tooling and accounts. No EAS project or developer account is assumed.
 
-See [verification evidence](../docs/verification/mobile.md), including the remaining live-service and physical-device gates. Passing these checks is not a production-readiness claim.
+The integration runner uses a separate MySQL instance and synthetic accounts. It executes the actual mobile session/realtime adapters against real services; it does not emulate a phone or test SecureStore. See the [runner guide](../server/test/integration/README.md) and [verification evidence](../docs/verification/mobile.md). Physical devices, external email delivery and signed app builds remain separate gates.
 
 ## Code map
 
