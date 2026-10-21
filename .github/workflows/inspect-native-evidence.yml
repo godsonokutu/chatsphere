@@ -20,7 +20,11 @@ jobs:
       - name: Retrieve latest Android native evidence
         shell: bash
         run: |
-          run_id="$(gh api --method GET "repos/$GITHUB_REPOSITORY/actions/runs" -f branch="$SOURCE_BRANCH" -F per_page=30 --jq '.workflow_runs | map(select(.name == "Native preview")) | first | .id')"
+          run_id=""
+          for candidate in $(gh api --method GET "repos/$GITHUB_REPOSITORY/actions/runs" -f branch="$SOURCE_BRANCH" -F per_page=30 --jq '.workflow_runs[] | select(.name == "Native preview") | .id'); do
+            count="$(gh api "repos/$GITHUB_REPOSITORY/actions/runs/$candidate/artifacts" --jq '.artifacts | map(select(.name == "android-native-evidence")) | length')"
+            if [[ "$count" -gt 0 ]]; then run_id="$candidate"; break; fi
+          done
           test -n "$run_id"
           gh run download "$run_id" --repo "$GITHUB_REPOSITORY" --name android-native-evidence --dir evidence
       - name: Show native hierarchy and screenshot
