@@ -74,7 +74,7 @@ jobs:
           if-no-files-found: ignore
       - name: Record scope
         if: always()
-        run: echo 'Syntax and isolated real health-router HTTP test only. MySQL startup/migrations, SMTP-backed verification, authentication, persistence, and full end-to-end Socket.IO messaging remain unverified.' >> "$GITHUB_STEP_SUMMARY"
+        run: echo 'This job checks syntax, the isolated health route and native-auth HTTP transport. Real MySQL, SMTP, session logic and messaging are checked in the separate integration job.' >> "$GITHUB_STEP_SUMMARY"
 
   mobile:
     name: Mobile types, contracts and JS bundles
@@ -107,7 +107,7 @@ jobs:
           if-no-files-found: ignore
       - name: Record scope
         if: always()
-        run: echo 'Mobile type checks, session/message logic and JavaScript packaging only. No signed APK/IPA, physical-device test, live MySQL/SMTP or real end-to-end messaging is verified.' >> "$GITHUB_STEP_SUMMARY"
+        run: echo 'This job checks mobile types, session/message logic and JavaScript packaging. Real services are checked in the separate integration job; signed APK/IPA and physical devices remain unverified.' >> "$GITHUB_STEP_SUMMARY"
 
   integration:
     name: MySQL, TLS SMTP and mobile integration
