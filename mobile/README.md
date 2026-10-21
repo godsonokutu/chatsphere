@@ -75,6 +75,13 @@ npm run test:integration
 
 `export:native` creates Android/iOS JavaScript bundles, not installable APK/IPA files. Native compilation, signing, provisioning and app-store submission need separately configured platform tooling and accounts. No EAS project or developer account is assumed.
 
+The separate `Native preview` workflow compiles a sample-only Android APK and
+an unsigned iOS simulator app, then runs native UI smoke flows. See
+[native build instructions and release gates](BUILDING.md) for identities,
+downloads, signing boundaries and EAS profiles. A green JavaScript export is
+not a substitute for that native job's result. See also the [dependency
+review](../docs/verification/mobile-dependencies.md).
+
 The integration runner uses a separate MySQL instance and synthetic accounts. It executes the actual mobile session/realtime adapters against real services; it does not emulate a phone or test SecureStore. See the [runner guide](../server/test/integration/README.md) and [verification evidence](../docs/verification/mobile.md). Physical devices, external email delivery and signed app builds remain separate gates.
 
 ## Code map

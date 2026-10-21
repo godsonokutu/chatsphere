@@ -40,3 +40,9 @@ yarn-error.*
 # generated native folders
 /ios
 /android
+
+# Native build and UI evidence (uploaded by CI)
+artifacts/
+ios-build/
+ui-output/
+*-ui.xml

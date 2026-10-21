@@ -29,6 +29,11 @@ A fourth job runs the actual mobile JavaScript adapters against the real API, a 
 
 ## Explicitly unverified
 
+The separate `Native preview` workflow adds Android APK compilation/emulator
+UI and iOS simulator compilation/UI. It publishes sample-only build artifacts
+and evidence. Its run must be inspected separately from the four-job `Verify`
+workflow. See [native build instructions](../../mobile/BUILDING.md).
+
 - Native SecureStore, physical Android/iPhone UI and background/network behavior.
 - Delivery to external email inboxes through the selected production provider.
 - Full browser-to-phone and phone-to-phone UI flows.

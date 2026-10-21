@@ -42,6 +42,8 @@ import {
 
 const emptySnapshot = { status: "signed-out" as const, user: null };
 const noSubscribe = () => () => {};
+const variant = process.env.EXPO_PUBLIC_APP_VARIANT || "development";
+const liveOnly = variant === "production" || variant === "staging";
 
 function ChatApp({
   client,
@@ -184,6 +186,7 @@ function ChatApp({
             ).map((item) => (
               <Pressable
                 key={item.name}
+                testID={`tab-${item.name}`}
                 accessibilityRole="tab"
                 accessibilityState={{ selected: tab === item.name }}
                 onPress={() => setTab(item.name)}
@@ -232,6 +235,7 @@ export default function App() {
   });
   const setup = useMemo(() => {
     try {
+      if (variant === "preview") throw new Error("Sample-only build");
       const apiUrl = validateApiUrl(process.env.EXPO_PUBLIC_API_URL, __DEV__);
       const transport = createTransport(apiUrl);
       return {
@@ -245,8 +249,9 @@ export default function App() {
         apiUrl: "",
         transport: null,
         session: null,
-        error:
-          "Live sign-in is not configured in this build. Explore the preview below.",
+        error: liveOnly
+          ? "This build could not load its server configuration. Please install a correctly configured build."
+          : "Live sign-in is not configured in this build. Explore the preview below.",
       };
     }
   }, []);
@@ -358,7 +363,7 @@ export default function App() {
                   session={setup.session}
                   transport={setup.transport}
                   configurationError={setup.error}
-                  onPreview={() => setPreview(true)}
+                  onPreview={liveOnly ? undefined : () => setPreview(true)}
                 />
               </>
             )}

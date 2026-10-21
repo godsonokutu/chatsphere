@@ -24,7 +24,7 @@ ChatSphere is a full-stack real-time messaging application built as a production
 
 An Android/iPhone client is now available in [`mobile/`](mobile/README.md), built with React Native, Expo and TypeScript. It shares this backend's accounts, conversation history and Socket.IO events. The first version includes authentication, inbox/search, direct conversations, existing group chats and manual message retries, plus an explicit local sample preview.
 
-Start with `cd mobile`, `npm ci`, then `npm start` for Expo Go or `npm run web` for the browser preview. See the [mobile setup guide](mobile/README.md) and [verification scope](docs/verification/mobile.md). A signed native app, physical-device testing and live MySQL/SMTP messaging remain separate gates.
+Start with `cd mobile`, `npm ci`, then `npm start` for Expo Go or `npm run web` for the browser preview. See the [mobile setup guide](mobile/README.md), [native build guide](mobile/BUILDING.md) and [verification scope](docs/verification/mobile.md). Production signing, physical-device testing and external email-provider delivery remain separate gates.
 
 ```mermaid
 flowchart LR

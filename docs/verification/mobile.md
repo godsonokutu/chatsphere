@@ -9,7 +9,7 @@ Environment: Windows 11, Node.js 24.14.1, npm 11.11.0. Mobile dependencies are c
 | Check | Result | What it proves |
 | --- | --- | --- |
 | Mobile `npm run typecheck` | PASS | Strict TypeScript checks across the app |
-| Mobile `npm test` | PASS, 14 tests | Session/token coordination, local sign-out, retry reconciliation, bigint-safe IDs and API URL policy |
+| Mobile `npm test` | PASS, 18 tests | Session/token coordination, local sign-out, retries, bigint-safe IDs, URL policy and native variant build gates |
 | Mobile `npm run export:web` | PASS | Production browser JavaScript bundle, with four font/icon assets |
 | Mobile `npm run export:native` | PASS | Android and iOS JavaScript/Hermes bundles; no native binary or signing |
 | Server `npm run check:syntax` | PASS, 85 files | Syntax only, including the integration runner |
@@ -52,6 +52,30 @@ The runner generates its own database, account and signing material, starts the 
 1. Verify delivery to outside inboxes with the selected real email provider, including provider authentication and operational limits.
 2. Exercise actual browser-to-phone and phone-to-phone UI flows against the configured API. JavaScript adapter integration does not establish native UI behavior.
 3. Test native SecureStore persistence/failure, iOS Keychain behavior, actual keyboard interaction, safe areas, text scaling, background/foreground changes, network transitions and access-token expiry on physical Android and iPhone devices.
-4. Compile/sign Android and iOS binaries with separately configured native tooling or EAS. No APK/IPA, provisioning profile, developer account or store release was created.
+4. Configure owner-controlled production signing and physical-iPhone provisioning. Native preview compilation/UI results are recorded separately below; no production APK/IPA or store release is claimed.
 
 Only generated credentials for disposable test services are used. No production service was deployed. GitHub Actions results must be inspected separately for the resulting commit; local results are not evidence of a completed hosted run.
+
+## Native build continuation
+
+The `Native preview` workflow compiles a self-contained Android preview APK and
+an unsigned iOS simulator app, then exercises the native sample UI using pinned
+Maestro 2.11.0. The archive checksum is verified before execution. The flow
+opens a conversation, enters/sends a sample message, navigates to the profile,
+leaves preview and relaunches the app. CI uploads compiler logs, UI results,
+screenshots and installer integrity evidence. Inspect the actual run result;
+the presence of this workflow does not prove a native build has passed.
+
+Local native generation confirmed the preview Android identifier, disabled
+cleartext traffic and backup, and removed unused recording/storage/overlay/
+vibration permissions. SDK-matched `expo-system-ui` enables the configured dark
+system appearance. SDK 57's opt-in iOS scene support is configured through
+`expo-build-properties`; the iOS job must establish native compilation.
+
+Production/staging configuration now rejects missing or placeholder HTTPS API
+addresses before compilation and removes the sample-preview action. Preview
+has a separate installed identity and never creates a live session. Four new
+build-policy tests passed, bringing the mobile suite to 18 tests. No saved Expo
+login or Expo token was present; physical-iPhone signing still requires an
+owner-controlled account/team. See [build guide](../../mobile/BUILDING.md) and
+[dependency review](mobile-dependencies.md).

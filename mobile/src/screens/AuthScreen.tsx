@@ -21,7 +21,7 @@ export function AuthScreen({
   session: Session | null;
   transport: Transport | null;
   configurationError: string;
-  onPreview: () => void;
+  onPreview?: () => void;
 }) {
   const [mode, setMode] = useState<"login" | "register" | "verify">("login");
   const [identity, setIdentity] = useState("");
@@ -338,48 +338,53 @@ export function AuthScreen({
           </Pressable>
         </View>
         <View style={{ flex: 1, minHeight: 30 }} />
-        <View
-          style={{
-            height: 1,
-            backgroundColor: colors.line,
-            marginBottom: 22,
-            marginTop: 25,
-          }}
-        />
-        <Pressable
-          accessibilityRole="button"
-          onPress={onPreview}
-          style={{
-            flexDirection: "row",
-            justifyContent: "center",
-            alignItems: "center",
-            gap: 9,
-            minHeight: 44,
-          }}
-        >
-          <Icon name="sparkles-outline" size={17} color={colors.blue} />
-          <Text
-            style={{
-              color: colors.blue,
-              fontFamily: font.medium,
-              fontSize: 14,
-            }}
-          >
-            Explore the mobile preview
-          </Text>
-          <Icon name="arrow-forward" size={17} color={colors.blue} />
-        </Pressable>
-        <Text
-          style={{
-            color: colors.faint,
-            textAlign: "center",
-            fontFamily: font.regular,
-            fontSize: 11,
-            marginTop: 6,
-          }}
-        >
-          Sample conversations. No account needed.
-        </Text>
+        {!!onPreview && (
+          <>
+            <View
+              style={{
+                height: 1,
+                backgroundColor: colors.line,
+                marginBottom: 22,
+                marginTop: 25,
+              }}
+            />
+            <Pressable
+              accessibilityRole="button"
+              onPress={onPreview}
+              testID="explore-preview"
+              style={{
+                flexDirection: "row",
+                justifyContent: "center",
+                alignItems: "center",
+                gap: 9,
+                minHeight: 44,
+              }}
+            >
+              <Icon name="sparkles-outline" size={17} color={colors.blue} />
+              <Text
+                style={{
+                  color: colors.blue,
+                  fontFamily: font.medium,
+                  fontSize: 14,
+                }}
+              >
+                Explore the mobile preview
+              </Text>
+              <Icon name="arrow-forward" size={17} color={colors.blue} />
+            </Pressable>
+            <Text
+              style={{
+                color: colors.faint,
+                textAlign: "center",
+                fontFamily: font.regular,
+                fontSize: 11,
+                marginTop: 6,
+              }}
+            >
+              Sample conversations. No account needed.
+            </Text>
+          </>
+        )}
       </ScrollView>
     </KeyboardAvoidingView>
   );

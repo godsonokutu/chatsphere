@@ -19,7 +19,10 @@
       },
       "softwareKeyboardLayoutMode": "resize"
     },
-    "plugins": ["expo-secure-store", "expo-font"],
+    "plugins": [
+      "expo-secure-store",
+      "expo-font"
+    ],
     "web": {
       "favicon": "./assets/favicon.png",
       "name": "ChatSphere Mobile Preview"

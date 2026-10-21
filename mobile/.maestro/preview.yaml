@@ -1,0 +1,27 @@
+appId: dev.godsonokutu.chatsphere.preview
+---
+- launchApp:
+    clearState: true
+- extendedWaitUntil:
+    visible: "Explore the mobile preview"
+    timeout: 60000
+- tapOn:
+    id: "explore-preview"
+- assertVisible: "PREVIEW.*SAMPLE CONVERSATIONS"
+- tapOn:
+    id: "conversation-11"
+- tapOn: "Message"
+- inputText: "Native preview smoke test"
+- tapOn: "Send message"
+- assertVisible: "Native preview smoke test"
+- takeScreenshot: "thread"
+- tapOn: "Back to conversations"
+- tapOn:
+    id: "tab-You"
+- assertVisible: "Mobile preview.*sample account"
+- tapOn: "Leave preview"
+- assertVisible: "Explore the mobile preview"
+- stopApp
+- launchApp
+- assertVisible: "Explore the mobile preview"
+- takeScreenshot: "auth"

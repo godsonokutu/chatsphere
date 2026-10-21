@@ -199,6 +199,7 @@ export function InboxScreen({
           return (
             <Pressable
               accessibilityRole="button"
+                testID={`conversation-${item.id}`}
               accessibilityLabel={`${name}, ${item.unreadCount} unread messages`}
               onPress={() => onOpen(item)}
               style={({ pressed }) => ({
